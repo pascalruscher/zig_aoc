@@ -4,13 +4,7 @@ const mem = std.mem;
 const fmt = std.fmt;
 const heap = std.heap;
 
-pub fn main() !void {
-    const input = "yzbqklnj";
-
-    std.debug.print("Solution: {!d}", .{getSecretAnswer(input)});
-}
-
-pub fn getSecretAnswer(input: []const u8) !usize {
+pub fn getSecretAnswer(comptime input: []const u8, comptime num_zeroes: usize) !usize {
     var hashed = [_]u8{1} ** Md5.digest_length;
 
     var arena = heap.ArenaAllocator.init(heap.page_allocator);
@@ -22,7 +16,7 @@ pub fn getSecretAnswer(input: []const u8) !usize {
         const concat = try fmt.allocPrint(allocator, "{s}{d}", .{ input, i });
 
         Md5.hash(concat, &hashed, .{});
-        if (mem.eql(u8, fmt.bytesToHex(hashed, fmt.Case.lower)[0..5], "00000")) {
+        if (mem.eql(u8, fmt.bytesToHex(hashed, fmt.Case.lower)[0..num_zeroes], "0" ** num_zeroes)) {
             break;
         }
     }
@@ -31,11 +25,11 @@ pub fn getSecretAnswer(input: []const u8) !usize {
 }
 
 test "getSecretAnswer for abcdef" {
-    const secret = try getSecretAnswer("abcdef");
+    const secret = try getSecretAnswer("abcdef", 5);
     try std.testing.expect(secret == 609043);
 }
 
 test "getSecretAnswer for pqrstuv" {
-    const secret = try getSecretAnswer("pqrstuv");
+    const secret = try getSecretAnswer("pqrstuv", 5);
     try std.testing.expect(secret == 1048970);
 }
