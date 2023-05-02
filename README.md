@@ -4,6 +4,8 @@ Personal solutions for [Advent of Code](https://adventofcode.com/) in [Zig](http
 
 ## How to run
 
+`zig build -- <year> <day> <a|b>`
+
 `zig build run -- <year> <day> <a|b>`
 
 `zig build test -- <year> <day> <a|b>`
