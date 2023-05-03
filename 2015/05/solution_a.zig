@@ -27,9 +27,7 @@ fn hasVowels(line: []const u8, required: usize) bool {
         const vowel_count = mem.count(u8, line, vowel);
         if (vowel_count > 0) {
             total_count += vowel_count;
-            if (total_count >= required) {
-                return true;
-            }
+            if (total_count >= required) return true;
         }
     }
     return false;
@@ -37,9 +35,7 @@ fn hasVowels(line: []const u8, required: usize) bool {
 
 fn hasDouble(line: []const u8) bool {
     for (line[1..], 1..) |c, i| {
-        if (c == line[i - 1]) {
-            return true;
-        }
+        if (c == line[i - 1]) return true;
     }
     return false;
 }
@@ -47,77 +43,36 @@ fn hasDouble(line: []const u8) bool {
 fn hasIllegal(line: []const u8) bool {
     const illegals = [_][]const u8{ "ab", "cd", "pq", "xy" };
     for (illegals) |illegal| {
-        if (mem.indexOf(u8, line, illegal) != null) {
-            return true;
-        }
+        if (mem.indexOf(u8, line, illegal) != null) return true;
     }
     return false;
 }
 
-test "hasVowels aei returns true" {
+test "hasVowels" {
     try std.testing.expect(hasVowels("aei", 3) == true);
-}
-
-test "hasVowels xazegov returns true" {
     try std.testing.expect(hasVowels("xazegov", 3) == true);
-}
-
-test "hasVowels aeiouaeiouaeiou returns true" {
     try std.testing.expect(hasVowels("aeiouaeiouaeiou", 4) == true);
-}
-
-test "hasVowels gggg returns false" {
     try std.testing.expect(hasVowels("gggg", 1) == false);
-}
-
-test "hasVowels gaag returns false" {
     try std.testing.expect(hasVowels("gaag", 3) == false);
 }
 
-test "hasDouble xx returns true" {
+test "hasDouble" {
     try std.testing.expect(hasDouble("xx") == true);
-}
-
-test "hasDouble abcdde returns true" {
     try std.testing.expect(hasDouble("abcdde") == true);
-}
-
-test "hasDouble aabbccdd returns true" {
     try std.testing.expect(hasDouble("aabbccdd") == true);
-}
-
-test "hasDouble fafafafa returns false" {
     try std.testing.expect(hasDouble("fafafafa") == false);
 }
 
-test "hasIllegal baab returns true" {
+test "hasIllegal" {
     try std.testing.expect(hasIllegal("baab") == true);
-}
-
-test "hasIllegal cdjlkma returns true" {
     try std.testing.expect(hasIllegal("cdjlkma") == true);
-}
-
-test "hasIllegal aaaaa returns false" {
     try std.testing.expect(hasIllegal("aaaaa") == false);
 }
 
-test "isNiceString ugknbfddgicrmopn returns true" {
+test "isNiceString" {
     try std.testing.expect(isNiceString("ugknbfddgicrmopn") == true);
-}
-
-test "isNiceString aaa returns true" {
     try std.testing.expect(isNiceString("ugknbfddgicrmopn") == true);
-}
-
-test "isNiceString jchzalrnumimnmhp returns false" {
     try std.testing.expect(isNiceString("jchzalrnumimnmhp") == false);
-}
-
-test "isNiceString haegwjzuvuyypxyu returns false" {
     try std.testing.expect(isNiceString("haegwjzuvuyypxyu") == false);
-}
-
-test "isNiceString dvszwmarrgswjxmb returns false" {
     try std.testing.expect(isNiceString("dvszwmarrgswjxmb") == false);
 }
